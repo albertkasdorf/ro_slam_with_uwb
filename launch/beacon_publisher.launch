@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+    <node
+        pkg="ro_slam_with_uwb" type="beacon_publisher.py" name="beacon_publisher"
+        output="screen"
+        respawn="true" respawn_delay="1" />
+</launch>

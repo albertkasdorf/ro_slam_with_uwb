@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!--
+        Beispiel:
+        roslaunch ro_slam_with_uwb ro_slam_with_uwb.launch open_rviz:=true
+    -->
+    <arg name="open_rviz" default="false" />
+    <arg name="start_teleop" default="false" />
+    <arg name="start_mrpt" default="true" />
+
+    <!-- Include -->
+    <include file="$(find ro_slam_with_uwb)/launch/robotino.launch" />
+    <include file="$(find ro_slam_with_uwb)/launch/sick_tim.launch" />
+    <!--
+    <include file="$(find ro_slam_with_uwb)/launch/laser_scan_matcher.launch" />
+    -->
+    <include file="$(find ro_slam_with_uwb)/launch/beacon_publisher.launch" />
+
+    <group if="$(arg start_mrpt)">
+        <include file="$(find ro_slam_with_uwb)/launch/mrpt_rbpf_slam.launch" />
+    </group>
+
+    <group if="$(arg start_xbox_teleop)">
+        <include file="$(find ro_slam_with_uwb)/launch/xbox_teleop.launch" />
+    </group>
+
+    <group if="$(arg open_rviz)">
+        <include file="$(find ro_slam_with_uwb)/launch/rviz.launch" />
+    </group>
+</launch>

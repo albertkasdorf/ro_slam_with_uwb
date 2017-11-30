@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<robot name="robotino">
+  <!-- Include files -->
+  <include filename="$(find ro_slam_with_uwb)/urdf/robotino_body.xacro"/>
+  <include filename="$(find ro_slam_with_uwb)/urdf/robotino_hardware.xacro"/>
+    
+  <robotino_body />
+</robot>

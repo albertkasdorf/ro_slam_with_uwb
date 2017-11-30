@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <!--
+    http://wiki.ros.org/joy?distro=lunar
+    http://wiki.ros.org/joy/Tutorials/ConfiguringALinuxJoystick
+    jstest /dev/input/js0
+    ll /dev/input/js0
+    -->
+    <node
+        pkg="joy" type="joy_node" name="joy_node"
+        output="screen">
+
+        <param name="dev" type="string" value="/dev/input/js0" />
+    </node>
+
+    <node
+        pkg="ro_slam_with_uwb" type="xbox_teleop.py" name="xbox_teleop"
+        output="screen" />
+</launch>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!--
+    https://github.com/AalborgUniversity-ControlLabs/start-here/tree/master/robotino
+    https://github.com/Expertinos/ros-indigo-robotino
+    -->
+
+    <arg name="hostname" default="10.42.0.2"/>
+
+    <param name="robot_description" textfile="$(find ro_slam_with_uwb)/urdf/robotino.urdf" />
+
+    <node
+        pkg="robot_state_publisher"
+        type="robot_state_publisher"
+        name="robot_state_publisher"
+        output="screen">
+
+        <param name="publish_frequency" type="double" value="20.0" />
+    </node>
+
+    <node
+        name="robotino_node"
+        pkg="robotino_node"
+        type="robotino_node"
+        output="screen">
+
+        <param name="hostname" value="$(arg hostname)" />
+        <param name="max_linear_vel" value="0.25" />
+        <param name="min_linear_vel" value="0.05" />
+        <param name="max_angular_vel" value="1.5" />
+        <param name="min_angular_vel" value="0.1" />
+        <remap from="robotino_joint_states" to="joint_states" />
+    </node>
+
+    <node name="robotino_odometry_node" pkg="robotino_node" type="robotino_odometry_node" output="screen">
+        <param name="hostname" value="$(arg hostname)" />
+    </node>
+
+</launch>
