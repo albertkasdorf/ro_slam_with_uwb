@@ -56,22 +56,12 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        anglebracketusb_link:
-          Value: false
         base_link:
           Value: true
-        camera_link:
-          Value: false
-        command_bridge_link:
-          Value: false
         laser_link:
           Value: true
-        map:
-          Value: true
-        odom:
-          Value: true
         uwb_reciever_link:
-          Value: false
+          Value: true
         wheel0_link:
           Value: false
         wheel1_link:
@@ -84,25 +74,17 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          odom:
-            base_link:
-              anglebracketusb_link:
-                {}
-              camera_link:
-                {}
-              command_bridge_link:
-                {}
-              laser_link:
-                {}
-              uwb_reciever_link:
-                {}
-              wheel0_link:
-                {}
-              wheel1_link:
-                {}
-              wheel2_link:
-                {}
+        base_link:
+          laser_link:
+            {}
+          uwb_reciever_link:
+            {}
+          wheel0_link:
+            {}
+          wheel1_link:
+            {}
+          wheel2_link:
+            {}
       Update Interval: 0
       Value: true
     - Class: rviz/MarkerArray
@@ -110,7 +92,7 @@ Visualization Manager:
       Marker Topic: /beacons_viz
       Name: /beacons_viz
       Namespaces:
-        "": true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -245,10 +227,55 @@ Visualization Manager:
       Topic: /particlecloud_beacons
       Unreliable: false
       Value: true
+    - Alpha: 1
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: ""
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        laser_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        uwb_reciever_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        wheel0_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel1_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel2_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+      Name: RobotModel
+      Robot Description: robot_description
+      TF Prefix: ""
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: map
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -269,25 +296,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.230618
+      Distance: 4.06467533
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.21822232
-        Y: -1.61853099
-        Z: 0.95472312
-      Focal Shape Fixed Size: true
+        X: 0
+        Y: 0
+        Z: 0
+      Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.00039756
+      Pitch: 0.505398452
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.25039649
+      Yaw: 3.0785892
     Saved: ~
 Window Geometry:
   Displays:
