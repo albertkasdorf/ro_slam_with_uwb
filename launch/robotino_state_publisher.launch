@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+    <param name="robot_description" textfile="$(find ro_slam_with_uwb)/urdf/robotino.urdf" />
+
+    <node
+        pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher_node"
+        output="screen" />
+</launch>

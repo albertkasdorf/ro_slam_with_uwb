@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
-<robot>
-  <property name="M_PI" value="3.14159"/>
-  <property name="M_SCALE" value="0.01"/>
-  <property name="BASE_RADIUS" value="0.18"/>
-  <property name="BASE_HEIGHT" value="0.05"/>
-  <property name="BASE_MASS" value="20"/>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:property name="M_PI" value="3.14159"/>
+  <xacro:property name="M_SCALE" value="0.01"/>
+  <xacro:property name="BASE_RADIUS" value="0.18"/>
+  <xacro:property name="BASE_HEIGHT" value="0.05"/>
+  <xacro:property name="BASE_MASS" value="20"/>
   
-  <macro name="robotino_body">
+  <xacro:macro name="robotino_body">
     
   	<link name="base_link">
+      <!--
       <inertial>
         <mass value="${BASE_MASS}" />
         <origin xyz="0 0 0" />
@@ -16,6 +17,7 @@
           iyy="1.0" iyz="0.0"
           izz="1.0" />
       </inertial>
+      -->
       <visual>
         <origin xyz="0.01 0 0" rpy="0 0 ${M_PI/2}"/>
         <geometry>
@@ -30,38 +32,45 @@
       </collision>
     </link>
     
-    <wheel name="wheel0" parent="base_link">
+    <xacro:wheel name="wheel0" parent="base_link">
       <origin xyz="0.065 0.11 0.04" rpy="0 0 ${M_PI/3}"/>
       <axis xyz="-1 0 0"/>
-    </wheel>
-    <wheel name="wheel1" parent="base_link">
+    </xacro:wheel>
+    <xacro:wheel name="wheel1" parent="base_link">
       <origin xyz="-0.13 0 0.04" rpy="0 0 0"/>
       <axis xyz="1 0 0"/>
-    </wheel>
-    <wheel name="wheel2" parent="base_link">
+    </xacro:wheel>
+    <xacro:wheel name="wheel2" parent="base_link">
       <origin xyz="0.065 -0.11 0.04" rpy="0 0 -${M_PI/3}"/>
       <axis xyz="-1 0 0"/>
-    </wheel>
+    </xacro:wheel>
     
+    <!--
     <command_bridge name="command_bridge" parent="base_link">
       <origin xyz="-0.05 0 0.13" rpy="0 0 ${M_PI/2}"/>
     </command_bridge>
-    
+    -->
+
+    <!--
     <camera name="camera" parent="base_link">
       <origin xyz="0.044 0 0.07" rpy="0 0 ${M_PI/2}"/>
     </camera>
-    
+    -->
+
+    <!--
     <anglebracketusb name="anglebracketusb" parent="base_link">
       <origin xyz="0.008 0 0.137" rpy="0 0 ${M_PI/2}"/>
     </anglebracketusb>
-    
-    <laser name="laser" parent="base_link">
+    -->
+
+    <xacro:laser name="laser" parent="base_link">
       <!--origin xyz="-0.022 0 0.232" rpy="0 0 0"/-->
-      <origin xyz="0.1 0 0" rpy="0 0 0"/>
-    </laser>
-    
-    <!--laser name="laser" parent="base_link"-->
-      <!--origin xyz="0.12 0 ${BASE_HEIGHT/2}" rpy="0 0 0"/-->
-    <!--/laser-->
-  </macro>
+      <origin xyz="0.0 0 0.225" rpy="0 0 0"/>
+    </xacro:laser>
+
+    <xacro:uwb name="uwb_reciever" parent="base_link">
+      <origin xyz="0.05 0 0.15" rpy="0 0 0"/>
+    </xacro:uwb>
+
+  </xacro:macro>
 </robot>
