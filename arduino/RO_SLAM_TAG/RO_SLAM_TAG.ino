@@ -16,6 +16,7 @@ const char ADDRESS[] = "A0:00:00:00:B1:6B:00:B5";
 
 void setup() {
   Serial.begin(115200);
+  Serial.setTimeout(10);
   // while(!Serial) {
   //   delay(10);
   // }
@@ -28,6 +29,17 @@ void setup() {
   DW1000Ranging.attachInactiveDevice(inactiveDevice);
   //Enable the filter to smooth the distance
   //DW1000Ranging.useRangeFilter(true);
+
+  // General configuration
+  DW1000.setAntennaDelay(16435);
+
+  // LED configuration
+  DW1000.enableDebounceClock();
+  DW1000.enableLedBlinking();
+  DW1000.setGPIOMode(MSGP0, LED_MODE); // enable GPIO0/RXOKLED blinking
+  DW1000.setGPIOMode(MSGP1, LED_MODE); // enable GPIO1/SFDLED blinking
+  DW1000.setGPIOMode(MSGP2, LED_MODE); // enable GPIO2/RXLED blinking
+  DW1000.setGPIOMode(MSGP3, LED_MODE); // enable GPIO3/TXLED blinking
   
   //we start the module as a tag
   DW1000Ranging.startAsTag(ADDRESS, DW1000.MODE_LONGDATA_RANGE_ACCURACY, false);
@@ -55,14 +67,27 @@ void transmitDATA(const Events event, const DW1000Device* device) {
   JsonObject& root = jsonBuffer.createObject();
 
   const byte* shortAddress = DW1000Ranging.getCurrentShortAddress();
+  float temp, vbat;
+  DW1000.getTempAndVbat(temp, vbat);
+  const auto antennaDelay = DW1000.getAntennaDelay();
 
   root["type"] = static_cast<byte>(event);
-  root["tagAdr"] = shortAddress[1]*256+shortAddress[0];
-  root["ancAdr"] = device->getShortAddress();
-  root["range"] = (event==Events::NEW_RANGE) ? device->getRange() : 0.0f;
-  root["rxPower"] = (event==Events::NEW_RANGE) ? device->getRXPower() : 0.0f;
-  root["fpPower"] = (event==Events::NEW_RANGE) ? device->getFPPower() : 0.0f;
-  root["quality"] = (event==Events::NEW_RANGE) ? device->getQuality() : 0.0f;
+  //tagAdr
+  root["ta"] = shortAddress[1]*256+shortAddress[0];
+  //ancAdr
+  root["aa"] = device->getShortAddress();
+  //range
+  root["r"] = (event==Events::NEW_RANGE) ? device->getRange() : 0.0f;
+  //rxPower
+  root["rxp"] = (event==Events::NEW_RANGE) ? device->getRXPower() : 0.0f;
+  //fpPower
+  root["fpp"] = (event==Events::NEW_RANGE) ? device->getFPPower() : 0.0f;
+  //quality
+  root["q"] = (event==Events::NEW_RANGE) ? device->getQuality() : 0.0f;
+  root["t"] = temp;
+  root["v"] = vbat;
+  root["ad"] = antennaDelay;
+  
   root.printTo(Serial);
   Serial.println();
 }
