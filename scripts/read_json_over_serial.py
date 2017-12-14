@@ -9,13 +9,30 @@ import csv
 import serial
 
 serial_port = "/dev/CP2104_Friend"
-csv_file_name = "B3.csv"
-ground_truth = 2.0
-measurements = 1000
+csv_file_name = "file_name.csv"
+ground_truth = 1.0
+measurements = 250
+antenna_delay = b'16440'
 
 with serial.Serial(serial_port, 115200, timeout=2) as ser:
     with open(csv_file_name, "a") as csv_file:
         csv_writer = csv.writer(csv_file, delimiter=';', lineterminator='\n')
+        csv_writer.writerow([
+            "type",
+            "tag_address", "anchor_address",
+            "range_ground_truth", "range",
+            "receive_power", "first_path_power",
+            "receive_quality",
+            "temperature", "voltage",
+            "antenna_delay"])
+
+        while True:
+            line = ser.readline()
+            line = line.decode("utf-8")
+            print(line)
+            if line.startswith("### TAG ###"):
+                ser.write(antenna_delay)
+                break
 
         for i in range(0, measurements):
             print("{0:03d} of {1:03d}".format(i+1, measurements))
@@ -36,10 +53,12 @@ with serial.Serial(serial_port, 115200, timeout=2) as ser:
             # receive_power, first_path_power,
             # receive_quality,
             # temperature, voltage
+            # antenna_delay
             csv_writer.writerow([
                 obj["type"],
                 obj["ta"], obj["aa"],
                 ground_truth, obj["r"],
                 obj["rxp"], obj["fpp"],
                 obj["q"],
-                obj["t"], obj["v"]])
+                obj["t"], obj["v"],
+                obj["ad"]])
