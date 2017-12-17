@@ -17,5 +17,10 @@
 
     <node
         pkg="ro_slam_with_uwb" type="xbox_teleop.py" name="xbox_teleop"
-        output="screen" />
+        output="screen">
+
+        <param name="threshold" value="0.2" />
+        <param name="linear_speed" value="2.0" />
+        <param name="angular_speed" value="3.0" />
+    </node>
 </launch>

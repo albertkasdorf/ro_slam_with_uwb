@@ -8,21 +8,44 @@ from mrpt_msgs.msg import ObservationRangeBeacon
 from mrpt_msgs.msg import SingleRangeBeaconObservation
 from scipy import interpolate
 
-#"{
-#   \"type\":0,
-#   \"tagAdr\":170,
-#   \"ancAdr\":160,
-#   \"range\":1.45,
-#   \"rxPower\":0.0,
-#   \"fpPower\":0.0,
-#   \"quality\":0.0
-#}"
+from dynamic_reconfigure.server import Server
+from ro_slam_with_uwb.cfg import BeaconPublisherConfig
+
+ser = None
+
+def config_callback(config, level):
+    global ser
+
+    rospy.loginfo("""Reconfiugre Request: {antenna_delay}""".format(**config))
+    if ser is not None:
+        adb = str(config.antenna_delay).encode()
+        ser.write(adb)
+        rospy.loginfo("Antenna delay is transfered.")
+    else:
+        rospy.loginfo("Serial is not open.")
+
+    return config
 
 def main():
+    global ser
+
     pub = rospy.Publisher('/beacon', ObservationRangeBeacon, queue_size=10)
     pub_raw = rospy.Publisher('/beacon_raw', ObservationRangeBeacon, queue_size=10)
     rospy.init_node('beacon_publisher')
+    antenna_delay = rospy.get_param('~antenna_delay', 16450)
+
+    srv = Server(BeaconPublisherConfig, config_callback)
     ser = serial.Serial('/dev/CP2104_Friend', 115200, timeout=2)
+
+    # Set inital antenna delay
+    while True:
+        line = ser.readline()
+        line = line.decode("utf-8")
+        #print line
+        if line.startswith("### TAG ###"):
+            ser.write(str(antenna_delay).encode())
+            rospy.loginfo("Antenna delay is transfered.")
+            break
 
     orb = ObservationRangeBeacon()
     orb.header.frame_id = 'uwb_reciever_link'
@@ -38,6 +61,7 @@ def main():
     orb.sensor_std_range = 0.1
     orb.sensed_data.append(SingleRangeBeaconObservation())
 
+    rospy.loginfo("Starting main loop...")
     while not rospy.is_shutdown():
         line = ser.readline()
         try:
@@ -48,11 +72,11 @@ def main():
 
         orb.header.stamp = rospy.Time.now()
         orb.header.seq = orb.header.seq + 1
-        orb.sensed_data[0].range = obj["range"]
-        orb.sensed_data[0].id = obj["ancAdr"]
+        orb.sensed_data[0].range = obj["r"]
+        orb.sensed_data[0].id = obj["aa"]
         pub_raw.publish(orb)
 
-        orb.sensed_data[0].range = correction(obj["range"])
+        orb.sensed_data[0].range = correction(obj["r"])
         pub.publish(orb)
 
 def correction(value):
