@@ -4,7 +4,7 @@
     <param name="odom_frame_id" value="odom" />
     <param name="global_frame_id" value="/map" />
     <param name="base_frame_id" value="base_link" />
-    <param name="sensor_source" value="/beacon,/scan" />
+    <param name="sensor_source" value="/beacon_raw,/scan" />
 
     <!-- Environment -->
     <env name="ROSCONSOLE_CONFIG_FILE" value="$(find ro_slam_with_uwb)/config/rosconsole.config"/>

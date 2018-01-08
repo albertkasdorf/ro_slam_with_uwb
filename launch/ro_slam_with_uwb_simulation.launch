@@ -17,8 +17,10 @@
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-11-17-13-28-16.bag" />
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-11-17-13-31-05.bag" />
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-11-17-13-33-13.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-50-57.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-53-54.bag" />
     -->
-    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-11-17-13-33-13.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-53-54.bag" />
     <arg name="rosbag_args" value="--loop --clock --delay=0" />
 
     <!-- Parameter -->

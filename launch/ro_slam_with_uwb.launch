@@ -6,7 +6,7 @@
         roslaunch ro_slam_with_uwb ro_slam_with_uwb.launch open_rviz:=true
     -->
     <arg name="open_rviz" default="false" />
-    <arg name="start_teleop" default="false" />
+    <arg name="start_xbox_teleop" default="true" />
     <arg name="start_mrpt" default="true" />
 
     <!-- Include -->
