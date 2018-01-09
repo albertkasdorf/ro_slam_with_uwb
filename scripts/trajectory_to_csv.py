@@ -3,6 +3,8 @@
 # Bestimmen der Trajektorie ueber den Service-Aufruf von GetRobotTrajectory
 # und speichern jeder Pose in einer CSV-Datei.
 #
+# Confused by python file mode "w+"
+# https://stackoverflow.com/questions/16208206/confused-by-python-file-mode-w
 
 import sys
 import csv
@@ -23,12 +25,19 @@ rospy.wait_for_service('trajectory')
 get_robot_trajectory = rospy.ServiceProxy('trajectory', GetRobotTrajectory)
 response = get_robot_trajectory()
 
-with open(csv_file_name, "a") as csv_file:
+with open(csv_file_name, "w") as csv_file:
     csv_writer = csv.writer(csv_file, delimiter=';', lineterminator='\n')
-    csv_writer.writerow(["x", "y", "z", "qx", "qy", "qz", "qw"])
+    csv_writer.writerow(["time","sec","nsec","x", "y", "z", "qx", "qy", "qz", "qw"])
+
 
     for pose in response.trajectory.poses:
+        t = rospy.Time(
+            pose.header.stamp.secs, pose.header.stamp.nsecs)
+
         csv_writer.writerow([
+            t.to_time(),
+            pose.header.stamp.secs,
+            pose.header.stamp.nsecs,
             pose.pose.position.x,
             pose.pose.position.y,
             pose.pose.position.z,
