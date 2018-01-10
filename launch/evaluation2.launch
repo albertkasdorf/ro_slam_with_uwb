@@ -4,8 +4,11 @@
     <arg name="open_rviz" default="true" />
     <!-- File ist broken: Unconnected tf trees because of the LaserScanMatcher.
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/2017-11-13-16-22-33.bag" />
-
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/2017-11-15-13-44-05.bag" />
+
+    Bei den folgenden Aufnahmen gilt:
+    - Das Topic "beacon" ist vom Typ "mrpt_msgs/ObservationRangeBeacon". Korrigierte Entfernung.
+    - Das Topic "beacon_raw" ist vom Typ "mrpt_msgs/ObservationRangeBeacon"
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-11-17-12-24-50.bag" /> Kein Tag vorhanden
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-11-17-12-31-28.bag" />
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-11-17-12-33-03.bag" />
@@ -20,6 +23,10 @@
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-50-57.bag" />
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-53-54.bag" />
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-53-54_filtered.bag" />
+
+    Bei den folgenden Aufnahmen gilt:
+    - Das Topic "beacon" ist vom Typ "mrpt_msgs/ObservationRangeBeacon"
+    - Das Topic "beacon_raw" ist vom Typ "ro_slam_with_uwb/Beacon"
     -->
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-53-54.bag" />
     <arg name="rosbag_args" value="--clock --delay=0 --rate=2.0" />

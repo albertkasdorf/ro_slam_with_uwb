@@ -7,5 +7,7 @@
         respawn="true" respawn_delay="1">
 
         <param name="antenna_delay" value="16450" />
+        <param name="sensor_frame_id" value="uwb_reciever_link" />
+        <param name="serial_port" value="/dev/CP2104_Friend" />
     </node>
 </launch>
