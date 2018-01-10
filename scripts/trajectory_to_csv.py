@@ -29,7 +29,6 @@ with open(csv_file_name, "w") as csv_file:
     csv_writer = csv.writer(csv_file, delimiter=';', lineterminator='\n')
     csv_writer.writerow(["time","sec","nsec","x", "y", "z", "qx", "qy", "qz", "qw"])
 
-
     for pose in response.trajectory.poses:
         t = rospy.Time(
             pose.header.stamp.secs, pose.header.stamp.nsecs)

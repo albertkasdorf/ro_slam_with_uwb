@@ -7,11 +7,10 @@ import rospy
 
 from mrpt_msgs.msg import *
 
-
 csv_writer = None
 csv_file = None
-csv_file_name = 'filename'
-beacon_topic_name = '/beacon_raw'
+csv_file_name = ''
+beacon_topic_name = ''
 csv_lines_written = 1
 callback_works = False
 
@@ -33,22 +32,23 @@ def ObservationRangeBeaconCallback(msg):
             srbo.id,
             srbo.range])
         csv_lines_written += 1
+
     return
 
-# TODO: Use ROS Parameter Server!!!
-if len(sys.argv) == 2:
-    csv_file_name = sys.argv[1]
-elif len(sys.argv) == 3:
-    csv_file_name = sys.argv[1]
-    beacon_topic_name = sys.argv[2]
-else:
-    print "%s [filename_without_extension [beacon_topic_name=/beacon_raw]]"%sys.argv[0]
+rospy.init_node('beacon_to_csv_node')
+
+csv_file_name = rospy.get_param('~csv_file_name', '')
+if not csv_file_name:
+    rospy.logfatal('Invalid parameter: csv_file_name')
     sys.exit(1)
 
 csv_file_name = os.path.splitext(csv_file_name)[0]
 csv_file_name = csv_file_name + '.csv'
 
-rospy.init_node('beacon_to_csv_node')
+beacon_topic_name = rospy.get_param('~beacon_topic_name', 'beacon_raw')
+if not beacon_topic_name:
+    rospy.logfatal('Invalid parameter: beacon_topic_name')
+    sys.exit(1)
 
 rospy.loginfo('Subscribing to topic: %s', beacon_topic_name)
 rospy.Subscriber(
@@ -62,6 +62,5 @@ with open(csv_file_name, "w") as csv_file:
     rospy.loginfo('Waiting for new messages.')
     rospy.spin()
 
-
-rospy.loginfo('%d lines witten to file: %s', csv_lines_written, csv_file_name)
+rospy.loginfo('%d lines written to file: %s', csv_lines_written, csv_file_name)
 rospy.loginfo('Time to rest, zzzZZzzzZZZ.')

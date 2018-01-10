@@ -19,6 +19,7 @@
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-11-17-13-33-13.bag" />
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-50-57.bag" />
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-53-54.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-53-54_filtered.bag" />
     -->
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-53-54.bag" />
     <arg name="rosbag_args" value="--clock --delay=0 --rate=2.0" />
@@ -40,7 +41,7 @@
         https://answers.ros.org/question/209224/show-robot-trajectory-in-rviz-real-time/
 		https://github.com/PickNikRobotics/rviz_visual_tools
 		https://answers.ros.org/question/209580/odometry-to-path-rviz/
-    -->
+    
     <node 
         pkg="hector_trajectory_server" type="hector_trajectory_server" name="hector_trajectory_server"
         output="screen">
@@ -50,7 +51,7 @@
         <param name="trajectory_update_rate" value="10.0" />
         <param name="trajectory_publish_rate" value="10"/>
     </node>
-    <!-- -->
+    -->
 
     <!--
         http://wiki.ros.org/hector_mapping?distro=kinetic
@@ -73,10 +74,25 @@
     <!--
     <node
         pkg="ro_slam_with_uwb" type="particlecloud_to_csv.py" name="particlecloud_to_csv_node"
-        output="screen"
-        args="$(arg rosbag_bagfile)" />
+        output="screen">
+
+        <param name="csv_file_name" value="$(arg rosbag_bagfile)" />
+    </node>
     -->
 
+    <!--
+    <node
+        pkg="ro_slam_with_uwb" type="beacon_to_csv.py" name="beacon_to_csv_node"
+        output="screen">
+
+        <param name="csv_file_name" value="$(arg rosbag_bagfile)" />
+        <param name="beacon_topic_name" value="beacon_raw" />
+    </node>
+    -->
+
+    <!--
+        http://wiki.ros.org/rf2o_laser_odometry
+    -->
     <!--
     <node
         pkg="rf2o_laser_odometry" type="rf2o_laser_odometry_node" name="rf2o_laser_odometry"
@@ -136,9 +152,13 @@
     <!-- -->
     <include file="$(find ro_slam_with_uwb)/launch/mrpt_rbpf_slam.launch" />
     <!-- -->
+    <!-- -->
     <include file="$(find ro_slam_with_uwb)/launch/robotino_state_publisher.launch" />
+    <!-- -->
 
+    <!-- -->
     <group if="$(arg open_rviz)">
         <include file="$(find ro_slam_with_uwb)/launch/rviz.launch" />
     </group>
+    <!-- -->
 </launch>

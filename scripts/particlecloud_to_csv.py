@@ -37,17 +37,15 @@ def particlecloud_callback(msg, msg_id):
     return
 
 
-# TODO: Use ROS Parameter Server!!!
-if len(sys.argv) >= 2:
-    csv_file_name = sys.argv[1]
-else:
-    print "%s [filename_without_extension]"%sys.argv[0]
+rospy.init_node('particlecloud_to_csv_node')
+
+csv_file_name = rospy.get_param('~csv_file_name', '')
+if not csv_file_name:
+    rospy.logfatal('Invalid parameter: csv_file_name')
     sys.exit(1)
 
 csv_file_name = os.path.splitext(csv_file_name)[0]
 csv_file_name = csv_file_name + '.csv'
-
-rospy.init_node('particlecloud_to_csv_node')
 
 rospy.loginfo('Subscribing to topic: particlecloud')
 rospy.Subscriber(
