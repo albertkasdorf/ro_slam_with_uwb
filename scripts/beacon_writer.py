@@ -28,7 +28,6 @@ def beacon_callback(msg):
 
     csv_writer.writerow([
         msg_time.to_time(), msg.header.stamp.secs, msg.header.stamp.nsecs,
-        msg.type,
         msg.tag_address, msg.anchor_address,
         msg.range,
         msg.receive_power, msg.first_path_power, msg.receive_quality,
