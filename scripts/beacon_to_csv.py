@@ -45,7 +45,7 @@ if not csv_file_name:
 csv_file_name = os.path.splitext(csv_file_name)[0]
 csv_file_name = csv_file_name + '.csv'
 
-beacon_topic_name = rospy.get_param('~beacon_topic_name', 'beacon_raw')
+beacon_topic_name = rospy.get_param('~beacon_topic_name', 'beacon')
 if not beacon_topic_name:
     rospy.logfatal('Invalid parameter: beacon_topic_name')
     sys.exit(1)

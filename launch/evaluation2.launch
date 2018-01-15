@@ -96,7 +96,7 @@
         output="screen">
 
         <param name="csv_file_name" value="$(arg rosbag_bagfile)" />
-        <param name="beacon_topic_name" value="beacon_raw" />
+        <param name="beacon_topic_name" value="beacon" />
     </node>
     -->
 
