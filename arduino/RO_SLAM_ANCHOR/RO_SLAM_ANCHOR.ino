@@ -4,7 +4,7 @@
 const uint8_t PIN_RST = 9; // reset pin
 const uint8_t PIN_IRQ = 3; // irq pin
 const uint8_t PIN_SS = SS; // spi select pin
-const char ADDRESS[] = "B1:00:00:00:B1:6B:00:B5";
+const char ADDRESS[] = "B4:00:00:00:B1:6B:00:B5";
 
 void setup() {
   Serial.begin(115200);

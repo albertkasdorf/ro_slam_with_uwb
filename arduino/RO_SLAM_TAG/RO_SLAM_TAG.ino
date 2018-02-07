@@ -12,7 +12,7 @@ enum class Events : byte { NEW_RANGE = 0, NEW_DEVICE = 1, INACTIVE_DEVICE = 2, }
 const uint8_t PIN_RST = 9; // reset pin
 const uint8_t PIN_IRQ = 3; // irq pin
 const uint8_t PIN_SS = SS; // spi select pin
-const char ADDRESS[] = "A0:00:00:00:B1:6B:00:B5";
+const char ADDRESS[] = "B0:00:00:00:B1:6B:00:B5";
 
 void setup() {
   Serial.begin(115200);
@@ -31,7 +31,7 @@ void setup() {
   //DW1000Ranging.useRangeFilter(true);
 
   // General configuration
-  DW1000.setAntennaDelay(16435);
+  DW1000.setAntennaDelay(16442);
 
   // LED configuration
   DW1000.enableDebounceClock();

@@ -62,7 +62,7 @@ def main():
     orb.sensor_pose_on_robot.orientation.w = 1
     orb.min_sensor_distance = 0.0
     orb.max_sensor_distance = 120.0
-    orb.sensor_std_range = 0.1
+    orb.sensor_std_range = 0.02
     orb.sensed_data.append(SingleRangeBeaconObservation())
 
     beacon = Beacon()

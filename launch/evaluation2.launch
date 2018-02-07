@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 
 <launch>
-    <arg name="open_rviz" default="false" />
+    <arg name="open_rviz" default="true" />
     <arg name="enable_laser_scan_matcher" default="false" />
     <arg name="enable_rf2o_laser_odometry" default="false" />
+    <arg name="enable_ro_slam_data_to_csv" default="false" />
 
     <!-- File ist broken: Unconnected tf trees because of the LaserScanMatcher.
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/2017-11-13-16-22-33.bag" />
@@ -32,7 +33,7 @@
     - Das Topic "beacon_raw" ist vom Typ "ro_slam_with_uwb/Beacon"
     -->
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-53-54.bag" />
-    <arg name="rosbag_args" value="--clock --delay=0 --rate=1.0 --start=0" />
+    <arg name="rosbag_args" value="--clock --delay=0 --rate=2.0 --start=0" />
 
     <!-- Parameter -->
     <param name="/use_sim_time" value="true" />
@@ -99,6 +100,14 @@
         <param name="beacon_topic_name" value="beacon" />
     </node>
     -->
+
+    <node
+        if="$(arg enable_ro_slam_data_to_csv)"
+        pkg="ro_slam_with_uwb" type="ro_slam_data_to_csv.py" name="ro_slam_data_to_csv_node"
+        output="screen">
+
+        <param name="source_file_name" value="$(arg rosbag_bagfile)" />
+    </node>
 
     <!--
         http://wiki.ros.org/rf2o_laser_odometry
