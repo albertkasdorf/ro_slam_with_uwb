@@ -8,6 +8,7 @@
     jstest /dev/input/js0
     ll /dev/input/js0
     -->
+    <!--
     <node
         pkg="joy" type="joy_node" name="joy_node"
         output="screen">
@@ -23,9 +24,9 @@
         <param name="linear_speed" value="2.0" />
         <param name="angular_speed" value="3.0" />
     </node>
+    -->
 
-
-    <!--
+    <!-- -->
     <node
         pkg="joy" type="joy_node" name="joy_node"
         output="screen">
@@ -41,11 +42,11 @@
         <param name="max_linear_vel" value="0.2" />
         <param name="min_linear_vel" value="0.05" />
 
-        <param name="max_angular_vel" value="1.0" />
+        <param name="max_angular_vel" value="0.75" />
         <param name="min_angular_vel" value="0.1" />
 
         <param name="threshold_linear" value="0.2" />
         <param name="threshold_angular" value="0.2" />
     </node>
-    -->
+    <!-- -->
 </launch>

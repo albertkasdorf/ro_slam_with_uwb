@@ -62,13 +62,13 @@ def joy_callback(msg):
     if msg.axes[0] <= -threshold_linear:
         twist_msg.linear.y = linear_mapping( msg.axes[0], -1.0, -threshold_linear, -max_linear_vel, -min_linear_vel )
 
-    # Mit dem Uhrzeigersinn
-    if msg.axes[3] >= threshold_angular:    
-        twist_msg.angular.z = linear_mapping( msg.axes[3], threshold_angular, 1.0, -min_angular_vel, -max_angular_vel )
-
     # Gegen den Uhrzeigersinn
+    if msg.axes[3] >= threshold_angular:    
+        twist_msg.angular.z = linear_mapping( msg.axes[3], threshold_angular, 1.0, min_angular_vel, max_angular_vel )
+
+    # Mit dem Uhrzeigersinn
     if msg.axes[3] <= -threshold_angular:
-        twist_msg.angular.z = linear_mapping( msg.axes[3], -1.0, -threshold_angular, max_angular_vel, min_angular_vel )
+        twist_msg.angular.z = linear_mapping( msg.axes[3], -1.0, -threshold_angular, -max_angular_vel, -min_angular_vel )
 
     pub_cmd_vel.publish(twist_msg)
     return
