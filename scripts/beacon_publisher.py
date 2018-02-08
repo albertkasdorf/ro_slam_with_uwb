@@ -53,9 +53,9 @@ def main():
 
     orb = ObservationRangeBeacon()
     orb.header.frame_id = sensor_frame_id
-    orb.sensor_pose_on_robot.position.x = 0.05
+    orb.sensor_pose_on_robot.position.x = 0.04
     orb.sensor_pose_on_robot.position.y = 0
-    orb.sensor_pose_on_robot.position.z = 0.2
+    orb.sensor_pose_on_robot.position.z = 0.26
     orb.sensor_pose_on_robot.orientation.x = 0
     orb.sensor_pose_on_robot.orientation.y = 0
     orb.sensor_pose_on_robot.orientation.z = 0

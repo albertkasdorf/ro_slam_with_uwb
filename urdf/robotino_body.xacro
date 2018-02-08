@@ -69,7 +69,7 @@
     </xacro:laser>
 
     <xacro:uwb name="uwb_reciever" parent="base_link">
-      <origin xyz="0.05 0 0.15" rpy="0 0 0"/>
+      <origin xyz="0.04 0 0.26" rpy="0 0 0"/>
     </xacro:uwb>
 
   </xacro:macro>
