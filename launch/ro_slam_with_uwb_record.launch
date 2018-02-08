@@ -9,9 +9,4 @@
         output="screen"
         args="$(arg rosbag_args)" />
 
-    <!-- Includes -->
-    <include file="$(find ro_slam_with_uwb)/launch/robotino.launch" />
-    <include file="$(find ro_slam_with_uwb)/launch/sick_tim.launch" />
-    <include file="$(find ro_slam_with_uwb)/launch/beacon_publisher.launch" />
-    <include file="$(find ro_slam_with_uwb)/launch/xbox_teleop.launch" />
 </launch>

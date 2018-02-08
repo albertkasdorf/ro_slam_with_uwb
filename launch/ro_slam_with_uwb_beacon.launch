@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<launch>
+    <node
+        pkg="ro_slam_with_uwb" type="beacon_observer.py" name="beacon_observer_node"
+        output="screen">
+
+        <param name="beacon_topic_name" value="beacon" />
+    </node>
+
+    <include file="$(find ro_slam_with_uwb)/launch/beacon_publisher.launch" />
+</launch>
