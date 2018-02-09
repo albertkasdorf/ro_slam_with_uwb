@@ -1,11 +1,14 @@
 <?xml version="1.0"?>
 <launch>
+    <!-- Arguments -->
+    <arg name="mrpt_rbpf_slam_sensor_source" default="beacon" />
+
     <!-- Parameter -->
     <param name="ini_filename" value="$(find ro_slam_with_uwb)/config/rbpf_slam.ini" />
     <param name="odom_frame_id" value="odom" />
     <param name="global_frame_id" value="map" />
     <param name="base_frame_id" value="base_link" />
-    <param name="sensor_source" value="/beacon_raw" />
+    <param name="sensor_source" value="$(arg mrpt_rbpf_slam_sensor_source)" />
 
     <!-- Environment -->
     <env name="ROSCONSOLE_CONFIG_FILE" value="$(find ro_slam_with_uwb)/config/rosconsole.config"/>

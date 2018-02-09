@@ -1,11 +1,6 @@
 <?xml version="1.0"?>
 
 <launch>
-    <arg name="open_rviz" default="true" />
-    <arg name="enable_laser_scan_matcher" default="false" />
-    <arg name="enable_rf2o_laser_odometry" default="false" />
-    <arg name="enable_ro_slam_data_to_csv" default="false" />
-
     <!-- File ist broken: Unconnected tf trees because of the LaserScanMatcher.
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/2017-11-13-16-22-33.bag" />
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/2017-11-15-13-44-05.bag" />
@@ -31,9 +26,53 @@
     Bei den folgenden Aufnahmen gilt:
     - Das Topic "beacon" ist vom Typ "mrpt_msgs/ObservationRangeBeacon"
     - Das Topic "beacon_raw" ist vom Typ "ro_slam_with_uwb/Beacon"
+
+    Erste Beacon Position:
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-12-30-43.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-12-30-43_filtered.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-12-33-53.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-12-33-53_filtered.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-12-37-13.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-12-37-13_filtered.bag" />
+
+    Zweite Beacon Position:
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-13-09-17.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-13-11-41.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-13-14-00.bag" />
+
+    NLOS Aufnahmen:
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-05-19.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-08-02.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-10-05.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-11-11.bag" />
+
+    Symmetrische Anordnung:
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-25-21.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-27-57.bag" />
+
+    Default Antenna delay:
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-53-24.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-56-49.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-59-13.bag" />
+
     -->
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-53-54.bag" />
-    <arg name="rosbag_args" value="--clock --delay=0 --rate=2.0 --start=0" />
+    <arg name="rosbag_args" value="--clock --delay=1.0 --rate=2.0 --start=0.0" />
+
+    <!--
+        - beacon
+        - beacon_raw
+        - beacon_delay
+    -->
+    <arg name="beacon_topic_name" value="beacon_raw" />
+
+    <arg name="open_rviz" default="true" />
+    <arg name="enable_laser_scan_matcher" default="false" />
+    <arg name="enable_rf2o_laser_odometry" default="false" />
+    <arg name="enable_ro_slam_data_to_csv" default="false" />
+    <arg name="enable_beacon_delay" default="false" />
+    <arg name="enable_mrpt_rbpf_slam" default="true" />
+    
 
     <!-- Parameter -->
     <param name="/use_sim_time" value="true" />
@@ -57,7 +96,7 @@
         pkg="hector_trajectory_server" type="hector_trajectory_server" name="hector_trajectory_server"
         output="log">
 
-        <param name="target_frame_name" value="odom"/>
+        <param name="target_frame_name" value="map"/>
         <param name="source_frame_name" value="base_link" />
         <param name="trajectory_update_rate" value="10.0" />
         <param name="trajectory_publish_rate" value="10"/>
@@ -100,6 +139,25 @@
         <param name="beacon_topic_name" value="beacon" />
     </node>
     -->
+
+    <!--
+    <node
+        pkg="ro_slam_with_uwb" type="beacon_correction.py" name="beacon_correction_node"
+        output="screen">
+
+        <param name="beacon_in_topic_name" value="beacon" />
+        <param name="beacon_out_topic_name" value="beacon_correction" />
+    </node>
+    -->
+
+    <node
+        if="$(arg enable_beacon_delay)"
+        pkg="ro_slam_with_uwb" type="beacon_delay.py" name="beacon_delay_node"
+        output="screen">
+
+        <param name="beacon_in_topic_name" value="beacon" />
+        <param name="beacon_out_topic_name" value="beacon_delay" />
+    </node>
 
     <node
         if="$(arg enable_ro_slam_data_to_csv)"
@@ -168,7 +226,12 @@
 
     <!-- Include -->
     <!-- -->
-    <include file="$(find ro_slam_with_uwb)/launch/mrpt_rbpf_slam.launch" />
+    <include
+        if="$(arg enable_mrpt_rbpf_slam)"
+        file="$(find ro_slam_with_uwb)/launch/mrpt_rbpf_slam.launch">
+
+        <arg name="mrpt_rbpf_slam_sensor_source" value="$(arg beacon_topic_name)" />
+    </include>
     <!-- -->
     <!-- -->
     <include file="$(find ro_slam_with_uwb)/launch/robotino_state_publisher.launch" />

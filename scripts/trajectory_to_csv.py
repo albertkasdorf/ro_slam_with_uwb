@@ -1,10 +1,14 @@
 #!/usr/bin/env python
-#
+#------------------------------------------------------------------------------
 # Bestimmen der Trajektorie ueber den Service-Aufruf von GetRobotTrajectory
 # und speichern jeder Pose in einer CSV-Datei.
 #
 # Confused by python file mode "w+"
 # https://stackoverflow.com/questions/16208206/confused-by-python-file-mode-w
+#
+# CLI:
+#   ./trajectory_to_csv.py file_name.csv
+#------------------------------------------------------------------------------
 
 import sys
 import csv

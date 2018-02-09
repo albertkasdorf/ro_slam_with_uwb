@@ -3,7 +3,7 @@
 # Anzeigen der aktuellen Beacon Messungen
 #
 # CLI:
-#   rosrun ro_slam_with_uwb beacon_observer.py _source_file_name:="/home/albert/Downloads/test.bag"
+#   rosrun ro_slam_with_uwb beacon_observer.py _beacon_topic_name:="beacon"
 #------------------------------------------------------------------------------
 
 

@@ -31,7 +31,7 @@ void setup() {
   //DW1000Ranging.useRangeFilter(true);
 
   // General configuration
-  DW1000.setAntennaDelay(16442);
+  DW1000.setAntennaDelay(16384);
 
   // LED configuration
   DW1000.enableDebounceClock();
