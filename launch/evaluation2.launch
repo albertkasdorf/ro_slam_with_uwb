@@ -37,6 +37,7 @@
 
     Zweite Beacon Position:
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-13-09-17.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-13-09-17_filtered.bag" />
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-13-11-41.bag" />
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-13-14-00.bag" />
 
@@ -53,25 +54,36 @@
     Default Antenna delay:
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-53-24.bag" />
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-56-49.bag" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-56-49_filtered.bag" />
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-59-13.bag" />
 
     -->
-    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2017-12-18-11-53-54.bag" />
-    <arg name="rosbag_args" value="--clock --delay=1.0 --rate=2.0 --start=0.0" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-27-57.bag" />
+    <arg name="rosbag_args" value="--clock --delay=1.0 --rate=4.0 --start=0.0" />
 
     <!--
         - beacon
         - beacon_raw
         - beacon_delay
+        - beacon_reunited
+        - beacon_fake
+        - beacon_corrected
     -->
-    <arg name="beacon_topic_name" value="beacon_raw" />
+    <arg name="beacon_topic_name" value="beacon" />
 
-    <arg name="open_rviz" default="true" />
+    <arg name="open_rviz" default="false" />
+    <arg name="enable_mrpt_rbpf_slam" default="false" />
+
     <arg name="enable_laser_scan_matcher" default="false" />
     <arg name="enable_rf2o_laser_odometry" default="false" />
-    <arg name="enable_ro_slam_data_to_csv" default="false" />
+
     <arg name="enable_beacon_delay" default="false" />
-    <arg name="enable_mrpt_rbpf_slam" default="true" />
+    <arg name="enable_beacon_faker" default="false" />
+    <arg name="enable_beacon_correction" default="false" />
+    <arg name="enable_beacon_reunition" default="false" />
+
+    <arg name="enable_beacon_to_csv" default="false" />
+    <arg name="enable_ro_slam_data_to_csv" default="false" />
     
 
     <!-- Parameter -->
@@ -82,7 +94,7 @@
     <!-- -->
     <node
         name="rosbag_node" pkg="rosbag" type="play"
-        output="log"
+        output="screen"
         args="$(arg rosbag_bagfile) $(arg rosbag_args)" />
     <!-- -->
 
@@ -130,25 +142,23 @@
     </node>
     -->
 
-    <!--
     <node
+        if="$(arg enable_beacon_to_csv)"
         pkg="ro_slam_with_uwb" type="beacon_to_csv.py" name="beacon_to_csv_node"
         output="screen">
 
         <param name="csv_file_name" value="$(arg rosbag_bagfile)" />
-        <param name="beacon_topic_name" value="beacon" />
+        <param name="beacon_topic_name" value="beacon_raw" />
     </node>
-    -->
 
-    <!--
     <node
+        if="$(arg enable_beacon_correction)"
         pkg="ro_slam_with_uwb" type="beacon_correction.py" name="beacon_correction_node"
         output="screen">
 
         <param name="beacon_in_topic_name" value="beacon" />
         <param name="beacon_out_topic_name" value="beacon_correction" />
     </node>
-    -->
 
     <node
         if="$(arg enable_beacon_delay)"
@@ -165,6 +175,21 @@
         output="screen">
 
         <param name="source_file_name" value="$(arg rosbag_bagfile)" />
+    </node>
+
+    <node
+        if="$(arg enable_beacon_faker)"
+        pkg="ro_slam_with_uwb" type="beacon_faker.py" name="beacon_faker_node"
+        output="screen">
+    </node>
+
+    <node
+        if="$(arg enable_beacon_reunition)"
+        pkg="ro_slam_with_uwb" type="beacon_reunition.py" name="beacon_reunition_node"
+        output="screen">
+
+        
+        <param name="in_topic_name" value="beacon_correction" />
     </node>
 
     <!--

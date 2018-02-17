@@ -18,16 +18,19 @@ from mrpt_msgs.msg import SingleRangeBeaconObservation
 
 
 #correction = {177:-0.32, 178:-0.16, 179:-0.23, 180:0.05}
-correction = {177:-0.30, 178:-0.30, 179:-0.30, 180:-0.30}
+#correction = {177:-0.30, 178:-0.30, 179:-0.30, 180:-0.30}
+correction = {177:0, 178:0, 179:0, 180:0}
+sigma = 0.02
 pub_beacon_corrected = None
 
 def beacon_callback(msg):
-    global correction, pub_beacon_corrected
+    global correction, sigma, pub_beacon_corrected
 
     id = msg.sensed_data[0].id
     range = msg.sensed_data[0].range
 
     msg.sensed_data[0].range = range + correction[id]
+    msg.sensor_std_range = sigma
     pub_beacon_corrected.publish(msg)
     return
 
