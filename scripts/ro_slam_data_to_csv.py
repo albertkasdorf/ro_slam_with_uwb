@@ -19,6 +19,8 @@ import rospy
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import PoseArray
 from mrpt_msgs.msg import BeaconObservationResult
+from mrpt_msgs.msg import ObservationRangeBeacon
+from mrpt_msgs.msg import SingleRangeBeaconObservation
 from ro_slam_with_uwb.msg import Beacon
 
 
@@ -27,14 +29,16 @@ file_bor = None
 file_bord = None
 file_pt = None
 file_pe = None
+file_orb = None
 
 csv_beacon = None
 csv_bor = None                      # beacon_observation_result
 csv_bord = None                     # beacon_observation_result_data
 csv_pt = None                       # csv_pose_trajectory
 csv_pe = None                       # csv_pose_estimation
+csv_orb = None                      # mrpt_msgs\ObservationRangeBeacon
 
-counter = [0, 0, 0, 0, 0]           # [beacon, bor, bord, pt, pe]
+counter = [0, 0, 0, 0, 0, 0]        # [beacon, bor, bord, pt, pe, orb]
 
 
 def beacon_callback(msg):
@@ -109,7 +113,7 @@ def pose_trajectory_callback(msg):
     return
 
 def pose_estimation_callback(msg):
-    global csv_pe
+    global csv_pe, counter
 
     msg_time = rospy.Time(msg.header.stamp.secs, msg.header.stamp.nsecs)
 
@@ -123,11 +127,23 @@ def pose_estimation_callback(msg):
         counter[4] = counter[4] + 1
     return
 
+def observation_range_beacon_callback(msg):
+    global csv_orb, counter
+
+    msg_time = rospy.Time(msg.header.stamp.secs, msg.header.stamp.nsecs)
+
+    for srbo in msg.sensed_data:
+        csv_orb.writerow([
+            msg_time.to_time(), msg.header.stamp.secs, msg.header.stamp.nsecs,
+            srbo.id, srbo.range])
+        counter[5] = counter[5] + 1
+    return
+
 def timer_callback(event):
     global counter
     rospy.loginfo(
-        'Beacon: %s - Bor: %s - Bord: %s - Pt: %s - Pe: %s',
-        counter[0], counter[1], counter[2], counter[3], counter[4])
+        'Beacon: %s - Bor: %s - Bord: %s - Pt: %s - Pe: %s - Orb: %s',
+        counter[0], counter[1], counter[2], counter[3], counter[4], counter[5])
     return
 
 
@@ -145,6 +161,7 @@ topic_bor = rospy.get_param(
     '~beacon_observation_result_topic_name', 'beacon_observation_result')
 topic_pt = rospy.get_param('~pose_trajectory_topic_name', 'pose_trajectory')
 topic_pe = rospy.get_param('~pose_estimation_topic_name', 'pose_estimation')
+topic_orb = rospy.get_param('~observation_range_beacon', 'beacon')
 
 rospy.loginfo('Subscribing to topic: %s', topic_beacon)
 rospy.Subscriber(topic_beacon, Beacon, beacon_callback)
@@ -158,6 +175,10 @@ rospy.Subscriber(topic_pt, PoseStamped, pose_trajectory_callback)
 
 rospy.loginfo('Subscribing to topic: %s', topic_pe)
 rospy.Subscriber(topic_pe, PoseArray, pose_estimation_callback)
+
+rospy.loginfo('Subscribing to topic: %s', topic_orb)
+rospy.Subscriber(
+    topic_orb, ObservationRangeBeacon, observation_range_beacon_callback)
 
 rospy.Timer(rospy.Duration(1), timer_callback)
 
@@ -206,6 +227,12 @@ csv_pe = csv.writer(file_pe, delimiter=';', lineterminator='\n')
 csv_pe.writerow([
     'time', 'sec', 'nsec', 'x', 'y', 'z', 'qx', 'qy', 'qz', 'qw' ])
 
+csv_file_name = source_file_name + '_orb.csv'
+rospy.loginfo('Creating a new file: %s', csv_file_name)
+file_orb = open(csv_file_name, 'w')
+csv_orb = csv.writer(file_orb, delimiter=';', lineterminator='\n')
+csv_orb.writerow(["time", "sec", "nsec", "id", "range"])
+
 rospy.loginfo('Waiting for new messages.')
 rospy.spin()
 
@@ -214,5 +241,6 @@ file_bor.close()
 file_bord.close()
 file_pt.close()
 file_pe.close()
+file_orb.close()
 
 rospy.loginfo('Time to rest, zzzZZzzzZZZ.')
