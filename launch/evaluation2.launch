@@ -58,8 +58,8 @@
     <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-14-59-13.bag" />
 
     -->
-    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-12-33-53.bag" />
-    <arg name="rosbag_args" value="--clock --delay=1.0 --rate=2.0 --start=0.0" />
+    <arg name="rosbag_bagfile" value="$(find ro_slam_with_uwb)/bags/Record_2018-02-08-12-33-53_filtered.bag" />
+    <arg name="rosbag_args" value="--clock --delay=2.0 --rate=2.0 --start=0.0" />
 
     <!--
         - beacon
@@ -69,22 +69,22 @@
         - beacon_fake
         - beacon_corrected
     -->
-    <arg name="beacon_topic_name" value="beacon_fake" />
+    <arg name="beacon_topic_name" value="beacon" />
     <arg name="beacon_raw_topic_name" value="beacon_raw_unknown" />
 
     <arg name="open_rviz" default="true" />
     <arg name="enable_mrpt_rbpf_slam" default="true" />
 
     <arg name="enable_laser_scan_matcher" default="false" />
-    <arg name="enable_rf2o_laser_odometry" default="false" />
+    <arg name="enable_rf2o_laser_odometry" default="true" />
 
     <arg name="enable_beacon_delay" default="false" />
-    <arg name="enable_beacon_faker" default="true" />
+    <arg name="enable_beacon_faker" default="false" />
     <arg name="enable_beacon_correction" default="false" />
     <arg name="enable_beacon_reunition" default="false" />
 
     <arg name="enable_beacon_to_csv" default="false" />
-    <arg name="enable_ro_slam_data_to_csv" default="true" />
+    <arg name="enable_ro_slam_data_to_csv" default="false" />
     
 
     <!-- Parameter -->

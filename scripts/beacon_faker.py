@@ -125,15 +125,15 @@ while not rospy.is_shutdown():
         bl_map = tfl.transformPose(global_frame_id, bl)
         #rospy.loginfo('%.2f %.2f' % (bl_map.pose.position.x, bl_map.pose.position.y))
 
-        range1 = generate_range(bl_map.pose.position, 1.0, 0.0)
-        range2 = generate_range(bl_map.pose.position, 4.0, 0.0)
-        range3 = generate_range(bl_map.pose.position, 4.0, 2.0)
-        range4 = generate_range(bl_map.pose.position, 1.0, 2.0)
+        #range1 = generate_range(bl_map.pose.position, 1.0, 0.0)
+        #range2 = generate_range(bl_map.pose.position, 4.0, 0.0)
+        #range3 = generate_range(bl_map.pose.position, 4.0, 2.0)
+        #range4 = generate_range(bl_map.pose.position, 1.0, 2.0)
 
-        #range1 = generate_range(bl_map.pose.position, 1.98,  0.88)
-        #range2 = generate_range(bl_map.pose.position, 1.98,  1.20)
-        #range3 = generate_range(bl_map.pose.position, 4.00, -0.12)
-        #range4 = generate_range(bl_map.pose.position, 5.04,  1.88)
+        range1 = generate_range(bl_map.pose.position, 1.98,  0.88)
+        range2 = generate_range(bl_map.pose.position, 1.98,  1.20)
+        range3 = generate_range(bl_map.pose.position, 4.00, -0.12)
+        range4 = generate_range(bl_map.pose.position, 5.04,  1.88)
 
         publish_fake_beacon2(pub, sensor_frame_id, range1, range2, range3, range4)
         rospy.loginfo('%.2f %.2f - %.2f %.2f %.2f %.2f' % (bl_map.pose.position.x, bl_map.pose.position.y, range1, range2, range3, range4))
